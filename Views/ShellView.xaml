@@ -1,0 +1,341 @@
+﻿<Window x:Class="GameLibraryViewer.Views.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GameLibraryViewer.Views"
+        xmlns:cal="http://www.caliburnproject.org"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        
+        Title="GCollect"
+        FontSize="20" FontFamily="Segoe UI Light"
+        Height="600" Width="1000"
+        MinHeight="600" MinWidth="1000">
+
+    <Window.Resources>
+        <Style x:Key="BigButtonBlackYellow">
+            <Setter Property="Button.Foreground" Value="#fdd000"/>
+            <Setter Property="Button.Background" Value="#000000"/>
+            <Setter Property="Button.FontFamily" Value="Arial Bold"/>
+            <Setter Property="Button.FontSize" Value="24"/>
+            <Setter Property="Button.BorderThickness" Value="0"/>
+            <Setter Property="Button.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Button.IsMouseOver" Value="True">
+                    <Setter Property="Button.Background" Value="#fdd000"/>
+                    <Setter Property="Button.Foreground" Value="#000000"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="MenuCheckbox">
+            <Setter Property="CheckBox.HorizontalAlignment" Value="Center"/>
+            <Setter Property="CheckBox.Margin" Value="0,5,0,5"/>
+        </Style>
+
+        <Style x:Key="TextBlockFieldName">
+            <Setter Property="TextBlock.Foreground" Value="#fdd000"/>
+            <Setter Property="TextBlock.Background" Value="#000000"/>
+            <Setter Property="TextBlock.FontFamily" Value="Arial Bold"/>
+            <Setter Property="TextBlock.FontSize" Value="12"/>
+            <Setter Property="TextBlock.VerticalAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <!--
+        Program grid
+    -->
+    <Grid Background="#2b2d2f">
+        <!--#region Grid setup -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="6*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--#endregion-->
+
+        <!--#region Banner -->
+        <Image Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" x:Name="GameBanner" Stretch="Fill"/>
+        <!--#endregion-->
+
+        <!--
+        Header with different launcher tabs
+        -->
+        <!--#region Header buttons -->
+        <Grid Column="0" ColumnSpan="2" Row="0" Background="#000000">
+            <!--#region Grid setup -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!--#endregion-->
+
+            <Button Grid.Row="0" Grid.Column="0" Content="Steam"
+                    x:Name="steam"
+                    cal:Message.Attach="[Event Click] = [Action LaunchPlatform($source)]"
+                    Style="{StaticResource BigButtonBlackYellow}"/>
+            <Button Grid.Row="0" Grid.Column="1" Content="Origin"
+                    x:Name="origin"
+                    cal:Message.Attach="[Event Click] = [Action LaunchPlatform($source)]"
+                    Style="{StaticResource BigButtonBlackYellow}"/>
+            <Button Grid.Row="0" Grid.Column="2" Content="Uplay"
+                    x:Name="uplay"
+                    cal:Message.Attach="[Event Click] = [Action LaunchPlatform($source)]"
+                    Style="{StaticResource BigButtonBlackYellow}"/>
+            <Button Grid.Row="0" Grid.Column="3" Content="Epic Games"
+                    x:Name="epicgames"
+                    cal:Message.Attach="[Event Click] = [Action LaunchPlatform($source)]"
+                    Style="{StaticResource BigButtonBlackYellow}"/>
+            <Button Grid.Row="0" Grid.Column="4" Content="Battlenet"
+                    x:Name="battlenet"
+                    cal:Message.Attach="[Event Click] = [Action LaunchPlatform($source)]"
+                    Style="{StaticResource BigButtonBlackYellow}"/>
+            <Button Grid.Row="0" Grid.Column="5" Content="GoG"
+                    x:Name="gog"
+                    cal:Message.Attach="[Event Click] = [Action LaunchPlatform($source)]"
+                    Style="{StaticResource BigButtonBlackYellow}"/>
+        </Grid>
+        <!--#endregion-->
+
+        <!--
+        Games side tab
+        -->
+        <!--#region Game menu -->
+        <Grid Column="0" Row="1" Background="#000000" Opacity="0.6">
+            <!--#region Grid setup -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="16*"/>
+            </Grid.RowDefinitions>
+            <!--#endregion-->
+
+            <!--#region Filter boxes -->
+            <Grid Column="0" Row="0" VerticalAlignment="Center">
+                <!--#region Grid setup -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!--#endregion-->
+
+                <CheckBox Grid.Column="0" Grid.Row="0" 
+                          Style="{StaticResource MenuCheckbox}"
+                          x:Name="ShowSteamGames"/>
+                <TextBlock Grid.Column="1" Grid.Row="0" Margin="0,5,0,5"
+                           Text="Steam" Style="{StaticResource TextBlockFieldName}"/>
+
+                <CheckBox Grid.Column="2" Grid.Row="0"
+                          Style="{StaticResource MenuCheckbox}"
+                          x:Name="ShowOriginGames"/>
+                <TextBlock Grid.Column="3" Grid.Row="0" Margin="0,5,0,5"
+                           Text="Origin" Style="{StaticResource TextBlockFieldName}"/>
+
+                <CheckBox Grid.Column="4" Grid.Row="0"
+                          Style="{StaticResource MenuCheckbox}"
+                          x:Name="ShowUplayGames"/>
+                <TextBlock Grid.Column="5" Grid.Row="0" Margin="0,5,0,5"
+                           Text="Uplay" Style="{StaticResource TextBlockFieldName}"/>
+
+                <CheckBox Grid.Column="0" Grid.Row="1"
+                          Style="{StaticResource MenuCheckbox}"
+                          x:Name="ShowEPGames"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" Margin="0,5,0,5"
+                           Text="Epic Games" Style="{StaticResource TextBlockFieldName}"/>
+
+                <CheckBox Grid.Column="2" Grid.Row="1"
+                          Style="{StaticResource MenuCheckbox}"
+                          x:Name="ShowBattlenetGames"/>
+                <TextBlock Grid.Column="3" Grid.Row="1" Margin="0,5,0,5"
+                           Text="Battlenet" Style="{StaticResource TextBlockFieldName}"/>
+
+                <CheckBox Grid.Column="4" Grid.Row="1"
+                          Style="{StaticResource MenuCheckbox}"
+                          x:Name="ShowGogGames"/>
+                <TextBlock Grid.Column="5" Grid.Row="1" Margin="0,5,0,5"
+                           Text="GoG" Style="{StaticResource TextBlockFieldName}"/>
+            </Grid>
+            <!--#endregion-->
+
+            <!--#region Search box -->
+            <TextBox Grid.Column="0" Grid.Row="1" FontSize="12"
+                     TextAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     Background="#000000" 
+                     Foreground="#fdd000" BorderBrush="#fdd000"
+                     BorderThickness="2"
+                     FontFamily="Arial"
+                     x:Name="Search"/>
+            <!--#endregion-->
+
+            <DataGrid Grid.Column="0" Grid.Row="2" Background="#000000" Margin="10, 10, 0, 0"
+                      HeadersVisibility="None" x:Name="Games"
+                      BorderThickness="0" AutoGenerateColumns="False" AlternatingRowBackground="#000000"
+                      RowBackground="#000000" SelectionMode="Single" IsReadOnly="True" Foreground="#fdd000">
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="#000000"/>
+                                <Setter Property="Background" Value="#fdd000"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Name}"
+                                        Width="*" FontFamily="Arial" FontSize="16"/>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+        </Grid>
+        <!--#endregion-->
+
+        <!--
+        Game info page and program main filler
+        -->
+        <!--#region Game Page -->
+        <!--#region Standard game info -->
+        <Grid Grid.Column="1" Grid.Row="1">
+            <!--#region Grid setup -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!--#endregion-->
+
+            <Image Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="6" Grid.RowSpan="4" 
+                   Stretch="Fill" x:Name="GameImage"/>
+
+            <Button Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" Content="Play"
+                    x:Name="LaunchGame" Style="{StaticResource BigButtonBlackYellow}"/>
+
+            <TextBlock Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="10"
+                       Background="#000000"/>
+            <StackPanel Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="10"
+                        Background="#000000" Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Size: " Style="{StaticResource TextBlockFieldName}"
+                           FontSize="18" TextAlignment="Center"/>
+                <TextBlock Style="{StaticResource TextBlockFieldName}"
+                           FontSize="18" x:Name="SelectedGameSize"/>
+            </StackPanel>
+
+            <TextBlock Grid.Column="7" Grid.Row="10"
+                       Background="#000000"/>
+            <StackPanel Grid.Column="7" Grid.Row="10"
+                        Background="#000000" Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Style="{StaticResource TextBlockFieldName}"
+                           FontSize="18" x:Name="SelectedGame_Path"/>
+            </StackPanel>
+        </Grid>
+        <!--#endregion-->
+
+        <!--
+        Footer with github link etc.
+        -->
+        <!--#region Footer -->
+        <Grid Column="0" ColumnSpan="2" Row="2" Background="#000000">
+            <!--#region Grid setup -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <!--#endregion-->
+
+            <Grid Column="0" Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" 
+                            HorizontalAlignment="Left">
+                    <TextBlock Text="Library Size: " Style="{StaticResource TextBlockFieldName}"
+                               FontSize="18" TextAlignment="Center"/>
+                    <TextBlock Style="{StaticResource TextBlockFieldName}"
+                               FontSize="18" x:Name="GameSizeTotal"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Column="2" Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="6*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Column="1" FontSize="15"
+                           Style="{StaticResource TextBlockFieldName}"
+                           Text="Github Link" TextAlignment="Right"/>
+            </Grid>
+        </Grid>
+        <!--#endregion-->
+
+    </Grid>
+    
+</Window>
